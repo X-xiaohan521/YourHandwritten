@@ -1,6 +1,8 @@
 """模型定义与前向传播、反向传播。"""
 
 from __future__ import annotations
+import os
+import pickle
 
 import numpy as np
 
@@ -98,3 +100,17 @@ class MLP:
                 dz = da * self._relu_derivative(caches[i - 1][1])
 
         return grads_w, grads_b
+
+    def save(self, path: str = "mlp_model.pt"):
+        """
+        保存模型到 .pt 文件。
+        """
+        state_dict: dict[str, np.ndarray] = {}
+        for i in range(len(self.layer_sizes) - 1):
+            state_dict["layer" + str(i) + ".weight"] = self.weights[i]
+            state_dict["layer" + str(i) + ".bias"] = self.biases[i]
+
+        head, _ = os.path.split(path)
+        os.makedirs(head, mode=0o755, exist_ok=True)
+        with open(path, "wb") as f:
+            pickle.dump(state_dict, f, pickle.HIGHEST_PROTOCOL)
