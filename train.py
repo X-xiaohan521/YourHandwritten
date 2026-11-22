@@ -39,7 +39,7 @@ def main():
 
     # 定义模型：784 -> 128 -> 64 -> 10
     model = MLP([784, 128, 64, 10])
-    optimizer = SGD(learning_rate=0.3)
+    optimizer = SGD(learning_rate=0.15)
 
     epochs = 10
     batch_size = 64
